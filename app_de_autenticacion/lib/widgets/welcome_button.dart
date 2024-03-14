@@ -1,3 +1,4 @@
+import 'package:app_de_autenticacion/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeButton extends StatelessWidget {
@@ -15,7 +16,7 @@ class WelcomeButton extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (e) => onTap!,
+            builder: (e) => const SignUpScreen(),
           ),
         );
       },
