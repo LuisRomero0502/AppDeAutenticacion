@@ -1,3 +1,5 @@
+import 'package:app_de_autenticacion/screens/signin_screen.dart';
+import 'package:app_de_autenticacion/screens/signup_screen.dart';
 import 'package:app_de_autenticacion/theme/theme.dart';
 import 'package:app_de_autenticacion/widgets/custom_scaffold.dart';
 import 'package:app_de_autenticacion/widgets/welcome_button.dart';
@@ -50,6 +52,7 @@ class WelcomeScreen extends StatelessWidget {
                   const Expanded(
                     child: WelcomeButton(
                       buttonText: 'Iniciar sesión',
+                      onTap: SignInScreen(),
                       //Sign in, accion
                       color: Colors.transparent,
                       textColor: Colors.white,
@@ -58,6 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                   Expanded(
                     child: WelcomeButton(
                       buttonText: 'Inscribirse',
+                      onTap: SignUpScreen(),
                       //Sign up, accion
                       color: Colors.white,
                       textColor: lightColorScheme.primary,

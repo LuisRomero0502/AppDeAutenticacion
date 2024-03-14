@@ -16,7 +16,7 @@ class WelcomeButton extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (e) => const SignUpScreen(),
+            builder: (e) => onTap!,
           ),
         );
       },
