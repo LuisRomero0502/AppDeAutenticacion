@@ -7,7 +7,7 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Color(0xFFFFFFFF)),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -15,7 +15,7 @@ class CustomScaffold extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/bg1.png',
+            'assets/images/4.jpg',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
