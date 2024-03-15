@@ -48,7 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
-                          color: lightColorScheme.primary,
+                          color: Color.fromARGB(255, 33, 171, 167),
                         ),
                       ),
                       const SizedBox(
@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     rememberPassword = value!;
                                   });
                                 },
-                                activeColor: lightColorScheme.primary,
+                                activeColor: Color.fromARGB(255, 33, 171, 167),
                               ),
                               const Text(
                                 'Recordarme',
@@ -143,7 +143,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               'Olvido su contraseña?',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
+                                color: Color.fromARGB(255, 33, 171, 167),
                               ),
                             ),
                           ),
@@ -244,7 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               'Registrarse',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
+                                color: Color.fromARGB(255, 33, 171, 167),
                               ),
                             ),
                           ),

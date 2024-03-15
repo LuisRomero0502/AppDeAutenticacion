@@ -49,7 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: TextStyle(
                           fontSize: 30.0,
                           fontWeight: FontWeight.w900,
-                          color: lightColorScheme.primary,
+                          color: Color.fromARGB(255, 33, 171, 167),
                         ),
                       ),
                       const SizedBox(
@@ -191,7 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 agreePersonalData = value!;
                               });
                             },
-                            activeColor: lightColorScheme.primary,
+                            activeColor: Color.fromARGB(255, 33, 171, 167),
                           ),
                           const Text(
                             'Acepto los ',
@@ -203,7 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           'Terminos y condiciones',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: lightColorScheme.primary,
+                              color: Color.fromARGB(255, 33, 171, 167),
                             ),
                           ),
                         ],
@@ -306,7 +306,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               'Iniciar sesión',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: lightColorScheme.primary,
+                                color: Color.fromARGB(255, 33, 171, 167),
                               ),
                             ),
                           ),
