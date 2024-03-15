@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 40.0,
                       ),
-                      // full name
+                      // name
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -66,6 +66,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         decoration: InputDecoration(
                           label: const Text('Nombre'),
                           hintText: 'Ingresar nombre',
+                          hintStyle: const TextStyle(
+                            color: Colors.black26,
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.black12, // Default border color
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.black12, // Default border color
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 25.0,
+                      ),
+                      // last name
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor ingrese su apellido';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          label: const Text('Apellido'),
+                          hintText: 'Ingresar apellido',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
