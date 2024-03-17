@@ -188,7 +188,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               _formSignInKey.currentState!.reset();
 
                               // Validar el correo electrónico y la contraseña
-                              if ((email == '123' && password == '123') ||
+                              if ((email == 'arleth.oseguera@unah.hn' && password == '20212020883') ||
                                   (email == 'lromeroi@unah.hn' &&
                                       password == '20212020532')) {
                                 // Muestra la pantalla de carga mientras se inicia sesión

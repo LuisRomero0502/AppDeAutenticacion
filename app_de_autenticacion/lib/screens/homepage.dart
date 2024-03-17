@@ -8,8 +8,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String avatarImagePath = userEmail == '123'
-        ? 'assets/images/bg1.png'
+    String avatarImagePath = userEmail == 'arleth.oseguera@unah.hn'
+        ? 'assets/images/7.jpg'
         : 'assets/images/5.jpg';
 
     return Scaffold(
