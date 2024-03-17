@@ -1,12 +1,12 @@
+import 'package:app_de_autenticacion/screens/homepage.dart';
+import 'package:app_de_autenticacion/screens/loadingscreen.dart';
 import 'package:app_de_autenticacion/screens/signup_screen.dart';
 import 'package:app_de_autenticacion/widgets/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../theme/theme.dart';
-
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -14,7 +14,11 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool rememberPassword = true;
+  bool _obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -43,7 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Bienvenido',
                         style: TextStyle(
                           fontSize: 30.0,
@@ -55,8 +59,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Por favor ingrese su Email';
                           }
                           return null;
@@ -85,10 +90,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 25.0,
                       ),
                       TextFormField(
-                        obscureText: true,
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
                         obscuringCharacter: '*',
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Por favor ingresar su contraseña';
                           }
                           return null;
@@ -111,6 +117,19 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -128,7 +147,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                     rememberPassword = value!;
                                   });
                                 },
-                                activeColor: Color.fromARGB(255, 33, 171, 167),
+                                activeColor:
+                                    const Color.fromARGB(255, 33, 171, 167),
                               ),
                               const Text(
                                 'Recordarme',
@@ -139,7 +159,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           GestureDetector(
-                            child: Text(
+                            child: const Text(
                               'Olvido su contraseña?',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -156,21 +176,65 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (_formSignInKey.currentState!.validate() &&
-                                rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Procesando información'),
-                                ),
-                              );
-                            } else if (!rememberPassword) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Por favor, acepte todas las condiciones')),
-                              );
+                            if (_formSignInKey.currentState!.validate()) {
+                              final email = _emailController.text.trim();
+                              final password = _passwordController.text.trim();
+
+                              // Limpiar los controladores de texto
+                              _emailController.clear();
+                              _passwordController.clear();
+
+                              // Resetear el estado del formulario
+                              _formSignInKey.currentState!.reset();
+
+                              // Validar el correo electrónico y la contraseña
+                              if ((email == '123' && password == '123') ||
+                                  (email == 'lromeroi@unah.hn' &&
+                                      password == '20212020532')) {
+                                // Muestra la pantalla de carga mientras se inicia sesión
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoadingScreen(),
+                                  ),
+                                ).then((_) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomePage(userEmail: email),
+                                    ),
+                                  );
+                                  _emailController.clear();
+                                  _passwordController.clear();
+                                });
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                          'Error de inicio de sesión'),
+                                      content: const Text(
+                                          'Correo electrónico o contraseña incorrectos'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text('Aceptar'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             }
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                                255, 33, 171, 167), // Cambia el color del botón
+                          ),
                           child: const Text('Iniciar sesión'),
                         ),
                       ),
@@ -236,11 +300,11 @@ class _SignInScreenState extends State<SignInScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (e) => const SignUpScreen(),
+                                  builder: (context) => const SignUpScreen(),
                                 ),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'Registrarse',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,

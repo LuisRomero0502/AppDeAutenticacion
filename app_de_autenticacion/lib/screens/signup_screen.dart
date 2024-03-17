@@ -1,11 +1,12 @@
 import 'package:app_de_autenticacion/screens/signin_screen.dart';
-import 'package:app_de_autenticacion/theme/theme.dart';
+import 'package:app_de_autenticacion/screens/welcome_screen.dart'; // Importa welcome_screen.dart
 import 'package:app_de_autenticacion/widgets/custom_scaffold.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -14,6 +15,81 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  late TextEditingController _nameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+  late TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _register() {
+    if (_formSignupKey.currentState!.validate() &&
+        agreePersonalData &&
+        _passwordController.text.trim() == _confirmPasswordController.text.trim()) {
+      // Print the entered data to the console
+      if (kDebugMode) {
+        print('Nombre: ${_nameController.text.trim()}');
+      }
+      if (kDebugMode) {
+        print('Apellido: ${_lastNameController.text.trim()}');
+      }
+      if (kDebugMode) {
+        print('Email: ${_emailController.text.trim()}');
+      }
+      if (kDebugMode) {
+        print('Contraseña: ${_passwordController.text}');
+      }
+      if (kDebugMode) {
+        print('Conformacion de Contraseña: ${_confirmPasswordController.text}');
+      }
+      // Add more fields if needed
+
+      // Show a dialog for successful registration
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Registro exitoso'),
+            content: const Text('¡Gracias por registrarte!'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Cierra el diálogo
+                  Navigator.pushReplacement( // Reemplaza la pantalla actual con welcome_screen.dart
+                    context,
+                    MaterialPageRoute(builder: (context) => const WelcomeScreen()), // Aquí asumiendo que el nombre de tu clase es WelcomeScreen
+                  );
+                },
+                child: const Text('Cerrar'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -37,14 +113,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               child: SingleChildScrollView(
-                // get started form
                 child: Form(
                   key: _formSignupKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // get started text
-                      Text(
+                      const Text(
                         'Comencemos',
                         style: TextStyle(
                           fontSize: 30.0,
@@ -55,10 +129,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 40.0,
                       ),
-                      // name
                       TextFormField(
+                        controller: _nameController,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Por favor ingrese su nombre';
                           }
                           return null;
@@ -71,13 +145,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -86,10 +160,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // last name
                       TextFormField(
+                        controller: _lastNameController,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Por favor ingrese su apellido';
                           }
                           return null;
@@ -102,13 +176,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -117,11 +191,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // email
                       TextFormField(
+                        controller: _emailController,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return 'Por favor ingrese su Email';
+                          }
+                          final emailRegExp =
+                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                          if (!emailRegExp.hasMatch(value.trim())) {
+                            return 'Por favor ingrese un correo electrónico válido';
                           }
                           return null;
                         },
@@ -133,13 +212,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -148,10 +227,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // password
                       TextFormField(
-                        obscureText: true,
-                        obscuringCharacter: '*',
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su contraseña';
@@ -160,61 +238,88 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         decoration: InputDecoration(
                           label: const Text('Contraseña'),
-                          hintText: 'ingresar contraseña',
+                          hintText: 'Ingresar contraseña',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 25.0,
                       ),
-                      //password 2
                       TextFormField(
-                        obscureText: true,
-                        obscuringCharacter: '*',
+                        controller: _confirmPasswordController,
+                        obscureText: _obscureConfirmPassword,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Por favor ingrese su contraseña';
+                          } else if (value.trim() != _passwordController.text.trim()) {
+                            return 'Las contraseñas no coinciden';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
                           label: const Text('Confirme su contraseña'),
-                          hintText: 'ingresar contraseña',
+                          hintText: 'Ingresar contraseña',
                           hintStyle: const TextStyle(
                             color: Colors.black26,
                           ),
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
-                              color: Colors.black12, // Default border color
+                              color: Colors.black12,
                             ),
                             borderRadius: BorderRadius.circular(10),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
+                              });
+                            },
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // i agree to the processing
                       Row(
                         children: [
                           Checkbox(
@@ -224,7 +329,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 agreePersonalData = value!;
                               });
                             },
-                            activeColor: Color.fromARGB(255, 33, 171, 167),
+                            activeColor:
+                                const Color.fromARGB(255, 33, 171, 167),
                           ),
                           const Text(
                             'Acepto los ',
@@ -232,8 +338,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               color: Colors.black45,
                             ),
                           ),
-                          Text(
-                          'Terminos y condiciones',
+                          const Text(
+                            'Terminos y condiciones',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color.fromARGB(255, 33, 171, 167),
@@ -244,33 +350,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // signup button
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
-                            if (_formSignupKey.currentState!.validate() &&
-                                agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Procesando información'),
-                                ),
-                              );
-                            } else if (!agreePersonalData) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text(
-                                        'Por favor, acepte todas las condiciones')),
-                              );
-                            }
-                          },
+                          onPressed: _register,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 33, 171, 167),
+                          ),
                           child: const Text('Registrarse'),
                         ),
                       ),
                       const SizedBox(
                         height: 30.0,
                       ),
-                      // sign up divider
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -303,7 +396,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                      // sign up social media logo
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -316,7 +408,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(
                         height: 25.0,
                       ),
-                      // already have an account
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -335,7 +426,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'Iniciar sesión',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
